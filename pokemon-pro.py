@@ -1,5 +1,5 @@
 
-# greet player, get name and if want to generate or choose pokemons
+# KATIE - greet player, get name and if want to generate or choose pokemons
 
 # generate list of 10 rand numbers (1-151) without duplicities
 
