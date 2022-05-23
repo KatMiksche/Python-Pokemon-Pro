@@ -17,6 +17,26 @@ while contains_duplicates is not False:
 # if choosing pokemons, by names of pokemon find IDs from all_pokemons and overwrite first 5 entries in the list
 
 # KATARINA - pull pokemons to 2 arrays of 5
+player1 = pd.DataFrame(columns=('id', 'name', 'height','weight','hp','attack','defence','sprite'))
+player2 = pd.DataFrame(columns=('id', 'name', 'height','weight','hp','attack','defence','sprite'))
+for i in range (0,5):
+    url = 'https://pokeapi.co/api/v2/pokemon/{}/'.format(pokemon_list[i])
+    response = requests.get(url)
+    pokemon = response.json()
+    pokemon_new = pd.DataFrame([[pokemon['id'], pokemon['name'], pokemon['height'], pokemon['weight'],
+                pokemon['stats'][0]['base_stat'], pokemon['stats'][1]['base_stat'], pokemon['stats'][2]['base_stat'],
+                pokemon['sprites']['front_default']]], columns=('id', 'name', 'height','weight','hp','attack','defence','sprite'))
+    player1 = pd.concat([player1,pokemon_new], ignore_index=True)
+for i in range (5,10):
+    url = 'https://pokeapi.co/api/v2/pokemon/{}/'.format(pokemon_list[i])
+    response = requests.get(url)
+    pokemon = response.json()
+    pokemon_new = pd.DataFrame([[pokemon['id'], pokemon['name'], pokemon['height'], pokemon['weight'],
+                pokemon['stats'][0]['base_stat'], pokemon['stats'][1]['base_stat'], pokemon['stats'][2]['base_stat'],
+                pokemon['sprites']['front_default']]], columns=('id', 'name', 'height','weight','hp','attack','defence','sprite'))
+    player2 = pd.concat([player2,pokemon_new], ignore_index=True)
+print(player1)
+print(player2)
 
 # KATARINA - choose pokemon for combat round and safeguard on 0 HP for human
 
