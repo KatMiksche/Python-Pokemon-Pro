@@ -37,16 +37,55 @@ for i in range (5,10):
     player2 = pd.concat([player2,pokemon_new], ignore_index=True)
 print(player1)
 print(player2)
+cols = ['hp', 'attack', 'defence']
+df1 = player1[cols].sum(axis=0)
+df2 = player2[cols].sum(axis=0)
+chance_to_win=round(df1.sum(axis=0)/df2.sum(axis=0),3)*100
+print('chance to win is ',chance_to_win,'%')
 
 # KATARINA - choose pokemon for combat round and safeguard on 0 HP for human
-
+alive = False
+while alive is not True:
+    p1=int(input('What pokemon do you want to play? 1/2/3/4/5 '))-1
+    if p1>-1 and p1<5:
+        if player1.loc[p1,'hp']>0: 
+            alive=True
+            print ('You chose ',player1.loc[p1,'name'])
+        else: print ('You need to choose pokemon capable of combat.')
+    else: print('You need to choose from numbers 1 to 5')
+    print(player1.loc[p1,'hp'])
+    
 # KATARINA - choose pokemon for combat round and safeguard on 0 HP for computer
-
+alive = False
+while alive is not True:
+    p2=random.randint(0, 4)
+    print(p2)
+    print(player2.loc[p2,'hp'])
+    if player2.loc[p2,'hp']>0: alive=True
+        
 # KATARINA - combat round = New HP = HP - (attack-defense)
+print(player1.loc[p1])
+print(player2.loc[p2])
+if player1.loc[p1,'attack']>player2.loc[p2,'defence']:
+    residual=player1.loc[p1,'attack']-player2.loc[p2,'defence']
+    player2.iat[p2,player2.columns.get_loc('defence')]=0
+    player2.iat[p2,player2.columns.get_loc('hp')]=player2.loc[p2,'hp']-residual
+else:
+    player2.iat[p2,player2.columns.get_loc('defence')]=player2.loc[p2,'defence']-player1.loc[p1,'attack']
+if player2.loc[p2,'hp']<0: player2.iat[p2,player2.columns.get_loc('hp')]=0
+print(player2.loc[p2])
+if player2.loc[p2,'attack']>player1.loc[p1,'defence']:
+    residual=player2.loc[p2,'attack']-player1.loc[p1,'defence']
+    player1.iat[p1,player1.columns.get_loc('defence')]=0
+    player1.iat[p1,player1.columns.get_loc('hp')]=player1.loc[p1,'hp']-residual
+else:
+    player1.iat[p1,player1.columns.get_loc('defence')]=player1.loc[p1,'defence']-player2.loc[p2,'attack']
+if player1.loc[p1,'hp']<0: player1.iat[p1,player1.columns.get_loc('hp')]=0
+print(player1.loc[p1])
 
 # game run - repetition of combat until all cards 0 hp
 
 # announce result
 
-# if win read highscores.csv to array, append new win and desc sort by win likelyhood (sum of hp+attack+defense/computer in %)
+# if win read highscores.csv to array, append new win and desc sort by win likelyhood (var chance_to_win = sum of hp+attack+defense/computer in %)
 # highscores.csv - timestamp, player name, pokemons in team, opponent team, win likelyhood
