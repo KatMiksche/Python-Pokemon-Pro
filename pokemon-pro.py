@@ -8,7 +8,7 @@ import pandas as pd
 # KATARINA  - generate list of 10 rand numbers (1-151) without duplicities
 contains_duplicates=True
 while contains_duplicates is not False:
-    pokemon_list=random.sample(range(0,100), 10)
+    pokemon_list=random.sample(range(1,151), 10)
     print(pokemon_list)
     id_set = set(pokemon_list)
     contains_duplicates = len(pokemon_list) != len(id_set)
