@@ -3,6 +3,34 @@ import requests
 import random
 import pandas as pd
 from datetime import datetime
+from tkinter import *
+from PIL import ImageTk,Image
+import io
+import urllib.request
+
+root=Tk()
+root.title("pokemon Game")
+root.geometry("600x400")
+root.configure(background="turquoise")
+
+url = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+
+with urllib.request.urlopen(url) as connection:
+    raw_data = connection.read()
+im = Image.open(io.BytesIO(raw_data))
+image = ImageTk.PhotoImage(im)
+
+my_label = Label(image=image)
+my_label.pack()
+
+
+
+
+Button_quit = Button(root,text="Exit",command=root.quit)
+Button_quit.pack()
+
+root.mainloop()
+
 
 # KATIE - greet player, get name and if want to generate or choose pokemons
 player_name=input('what is your name? ')
