@@ -14,9 +14,8 @@ while contains_duplicates is not False:
     print(pokemon_list)
     id_set = set(pokemon_list)
     contains_duplicates = len(pokemon_list) != len(id_set)
-    print(contains_duplicates)
 
-# if choosing pokemons, by names of pokemon find IDs from all_pokemons and overwrite first 5 entries in the list
+# KATIE - if choosing pokemons, by names of pokemon find IDs from all_pokemons and overwrite first 5 entries in the list
 
 # KATARINA - pull pokemons to 2 arrays of 5
 player1 = pd.DataFrame(columns=('id', 'name', 'height','weight','hp','attack','defence','sprite'))
@@ -37,8 +36,8 @@ for i in range (5,10):
                 pokemon['stats'][0]['base_stat'], pokemon['stats'][1]['base_stat'], pokemon['stats'][2]['base_stat'],
                 pokemon['sprites']['front_default']]], columns=('id', 'name', 'height','weight','hp','attack','defence','sprite'))
     player2 = pd.concat([player2,pokemon_new], ignore_index=True)
-print ('\n\nYour team\n',player1)
-print ('\n\nOpponents team\n',player2)
+print ('\n\nYour team\n',player1.iloc[0:5,0:7])
+print ('\n\nOpponents team\n',player2.iloc[0:5,0:7])
 cols = ['hp', 'attack', 'defence']
 df1 = player1[cols].sum(axis=0)
 df2 = player2[cols].sum(axis=0)
@@ -84,14 +83,14 @@ while player1['hp'].sum(axis=0)>0 and player2['hp'].sum(axis=0):
     else:
         player1.iat[p1,player1.columns.get_loc('defence')]=player1.loc[p1,'defence']-player2.loc[p2,'attack']
     if player1.loc[p1,'hp']<0: player1.iat[p1,player1.columns.get_loc('hp')]=0
-    print ('\n\nYour team\n',player1)
-    print ('\n\nOpponents team\n',player2)
+    print('\n\nYour team\n', player1.iloc[0:5, 0:7])
+    print('\n\nOpponents team\n', player2.iloc[0:5, 0:7])
 
 # announce result
 if player1['hp'].sum(axis=0)<player2['hp'].sum(axis=0): 
-    print('Unfortunatelly your team lost')
+    print('\n\nUnfortunatelly your team lost')
 else:
-    print('Your team won! \nCheck the highscores.csv!')
+    print('\n\nYour team won! \nCheck the highscores.csv!')
 
 # if win read highscores.csv to array, append new win and desc sort by win likelyhood (var chance_to_win = sum of hp+attack+defense/computer in %)
 # highscores.csv - timestamp, player name, pokemons in team, opponent team, win likelyhood
