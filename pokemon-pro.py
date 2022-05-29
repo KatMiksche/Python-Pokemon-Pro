@@ -48,43 +48,44 @@ print('chance to win is ',chance_to_win,'%')
 # KATARINA - game run - repetition of combat until all cards 0 hp
 while player1['hp'].sum(axis=0)>0 and player2['hp'].sum(axis=0):
     # HERE GOES THE CODE FOR CHOOSING CARDS AND BATTLE ROUNDS
-    
-# KATARINA - choose pokemon for combat round and safeguard on 0 HP for human
-alive = False
-while alive is not True:
-    p1=int(input('What pokemon do you want to play? 1/2/3/4/5 '))-1
-    if p1>-1 and p1<5:
-        if player1.loc[p1,'hp']>0: 
-            alive=True
-            print ('You chose ',player1.loc[p1,'name'])
-        else: print ('You need to choose pokemon capable of combat.')
-    else: print('You need to choose from numbers 1 to 5')
-    
+
 # KATARINA - choose pokemon for combat round and safeguard on 0 HP for computer
-alive = False
-while alive is not True:
-    p2=random.randint(0, 4)
-    if player2.loc[p2,'hp']>0: alive=True
-        
-# KATARINA - combat round = New HP = HP - (attack-defense)
-print('\n\nYour pokemon\n',player1.loc[p1])
-print('\n\nOpponents pokemon\n',player2.loc[p2])
-if player1.loc[p1,'attack']>player2.loc[p2,'defence']:
-    residual=player1.loc[p1,'attack']-player2.loc[p2,'defence']
-    player2.iat[p2,player2.columns.get_loc('defence')]=0
-    player2.iat[p2,player2.columns.get_loc('hp')]=player2.loc[p2,'hp']-residual
-else:
-    player2.iat[p2,player2.columns.get_loc('defence')]=player2.loc[p2,'defence']-player1.loc[p1,'attack']
-if player2.loc[p2,'hp']<0: player2.iat[p2,player2.columns.get_loc('hp')]=0
-if player2.loc[p2,'attack']>player1.loc[p1,'defence']:
-    residual=player2.loc[p2,'attack']-player1.loc[p1,'defence']
-    player1.iat[p1,player1.columns.get_loc('defence')]=0
-    player1.iat[p1,player1.columns.get_loc('hp')]=player1.loc[p1,'hp']-residual
-else:
-    player1.iat[p1,player1.columns.get_loc('defence')]=player1.loc[p1,'defence']-player2.loc[p2,'attack']
-if player1.loc[p1,'hp']<0: player1.iat[p1,player1.columns.get_loc('hp')]=0
-print ('\n\nYour team\n',player1)
-print ('\n\nOpponents team\n',player2)
+    alive = False
+    while alive is not True:
+        p2 = random.randint(0, 4)
+        if player2.loc[p2, 'hp'] > 0: alive = True
+    print('\n\nOpponents pokemon\n', player2.loc[p2])
+
+# KATARINA - choose pokemon for combat round and safeguard on 0 HP for human
+    alive = False
+    while alive is not True:
+        p1=int(input('What pokemon do you want to play? 1/2/3/4/5 '))-1
+        if p1>-1 and p1<5:
+            if player1.loc[p1,'hp']>0:
+                alive=True
+                print ('You chose ',player1.loc[p1,'name'])
+            else: print ('You need to choose pokemon capable of combat.')
+        else: print('You need to choose from numbers 1 to 5')
+    print('\n\nYour pokemon\n', player1.loc[p1])
+
+
+    # KATARINA - combat round = New HP = HP - (attack-defense)
+    if player1.loc[p1,'attack']>player2.loc[p2,'defence']:
+        residual=player1.loc[p1,'attack']-player2.loc[p2,'defence']
+        player2.iat[p2,player2.columns.get_loc('defence')]=0
+        player2.iat[p2,player2.columns.get_loc('hp')]=player2.loc[p2,'hp']-residual
+    else:
+        player2.iat[p2,player2.columns.get_loc('defence')]=player2.loc[p2,'defence']-player1.loc[p1,'attack']
+    if player2.loc[p2,'hp']<0: player2.iat[p2,player2.columns.get_loc('hp')]=0
+    if player2.loc[p2,'attack']>player1.loc[p1,'defence']:
+        residual=player2.loc[p2,'attack']-player1.loc[p1,'defence']
+        player1.iat[p1,player1.columns.get_loc('defence')]=0
+        player1.iat[p1,player1.columns.get_loc('hp')]=player1.loc[p1,'hp']-residual
+    else:
+        player1.iat[p1,player1.columns.get_loc('defence')]=player1.loc[p1,'defence']-player2.loc[p2,'attack']
+    if player1.loc[p1,'hp']<0: player1.iat[p1,player1.columns.get_loc('hp')]=0
+    print ('\n\nYour team\n',player1)
+    print ('\n\nOpponents team\n',player2)
 
 # announce result
 if player1['hp'].sum(axis=0)<player2['hp'].sum(axis=0): 
@@ -115,4 +116,4 @@ else:
     scores=pd.concat([scores, new_score], ignore_index=True)
     scores=scores.sort_values(by=['Win_likelyhood'])
     print(scores)
-    scores.to_csv(r"C:\Users\Kat\PycharmProjects\pythonProject\highscores.csv", index=False)
+    scores.to_csv(r"C:\Users\Kat\PycharmProjects\pythonProject\highscores.csv", index=False) #CHANGE THE LOCATION OF FILE
