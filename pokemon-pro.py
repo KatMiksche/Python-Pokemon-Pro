@@ -2,8 +2,10 @@
 import requests
 import random
 import pandas as pd
+from datetime import datetime
 
 # KATIE - greet player, get name and if want to generate or choose pokemons
+player_name=input('what is your name? ')
 
 # KATARINA  - generate list of 10 rand numbers (1-151) without duplicities
 contains_duplicates=True
@@ -84,11 +86,33 @@ if player1.loc[p1,'hp']<0: player1.iat[p1,player1.columns.get_loc('hp')]=0
 print ('\n\nYour team\n',player1)
 print ('\n\nOpponents team\n',player2)
 
-
-
-
 # announce result
-IF player1['hp'].sum(axis=0)>player2['hp'].sum(axis=0): #WIN
+if player1['hp'].sum(axis=0)<player2['hp'].sum(axis=0): 
+    print('Unfortunatelly your team lost')
+else:
+    print('Your team won! \nCheck the highscores.csv!')
 
 # if win read highscores.csv to array, append new win and desc sort by win likelyhood (var chance_to_win = sum of hp+attack+defense/computer in %)
 # highscores.csv - timestamp, player name, pokemons in team, opponent team, win likelyhood
+    scores=pd.read_csv(r"C:\Users\Kat\PycharmProjects\pythonProject\highscores.csv") #CHANGE THE LOCATION OF FILE
+
+    list=player1['name'].to_list()
+    pok1=' '.join(list)
+    list=player2['name'].to_list()
+    pok2=' '.join(list)
+
+    # source https://www.programiz.com/python-programming/datetime/strftime
+    now = datetime.now() # current date and time
+    year = now.strftime("%Y")
+    month = now.strftime("%m")
+    day = now.strftime("%d")
+    time = now.strftime("%H:%M:%S")
+    date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
+
+    result=[date_time, player_name, pok1, pok2, chance_to_win]
+    print(result)
+    new_score = pd.DataFrame([result], columns=['Timestamp', 'Player_name', 'Pokemons_in_team', 'Opponent_team', 'Win_likelyhood'])
+    scores=pd.concat([scores, new_score], ignore_index=True)
+    scores=scores.sort_values(by=['Win_likelyhood'])
+    print(scores)
+    scores.to_csv(r"C:\Users\Kat\PycharmProjects\pythonProject\highscores.csv", index=False)
