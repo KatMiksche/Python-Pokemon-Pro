@@ -82,6 +82,10 @@ while player1['hp'].sum(axis=0)>0 and player2['hp'].sum(axis=0):
         p2 = random.randint(0, 4)
         if player2.loc[p2, 'hp'] > 0: alive = True
     print('\n\nOpponents pokemon\n', player2.loc[p2])
+    url=player2.loc[p2,'sprite']
+    text=player2.loc[p2,'name']
+    text2=player2.iloc[p2,1:7]
+
 
 # KATARINA - choose pokemon for combat round and safeguard on 0 HP for human
     alive = False
@@ -94,9 +98,11 @@ while player1['hp'].sum(axis=0)>0 and player2['hp'].sum(axis=0):
             else: print ('You need to choose pokemon capable of combat.')
         else: print('You need to choose from numbers 1 to 5')
     print('\n\nYour pokemon\n', player1.loc[p1])
-
+    #graphics your pokemon
+    #graphics button
 
     # KATARINA - combat round = New HP = HP - (attack-defense)
+
     if player1.loc[p1,'attack']>player2.loc[p2,'defence']:
         residual=player1.loc[p1,'attack']-player2.loc[p2,'defence']
         player2.iat[p2,player2.columns.get_loc('defence')]=0
