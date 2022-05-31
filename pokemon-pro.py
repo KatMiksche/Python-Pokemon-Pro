@@ -25,7 +25,7 @@ img = ImageTk.PhotoImage(Image.open("start.png"))
 lbl_image = Label(frm_start, image = img)
 lbl_image.pack()
 
-lbl_pname = Label(frm_start, text='what is your name? ', font=('Times 14'))
+lbl_pname = Label(frm_start, text='What is your name? ', font=('Times 14'))
 lbl_pname.pack()
 
 # TextBox Creation
@@ -63,7 +63,7 @@ while contains_duplicates is not False:
 # KATIE/KATARINA - if choosing pokemons, by names of pokemon find IDs from all_pokemons and overwrite first 5 entries in the list
 answer=False
 while answer==False:
-    choice=input('Do you want to get random pokemons or choose them by names? random/choose')
+    choice=input('Do you want to get random pokemons or choose them by names? random/choose  ')
     if choice=='random':
         answer=True
     elif choice=='choose':
