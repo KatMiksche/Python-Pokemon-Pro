@@ -8,28 +8,158 @@ from PIL import ImageTk,Image
 import io
 import urllib.request
 
-root=Tk()
-root.title("pokemon Game")
-root.geometry("600x400")
-root.configure(background="turquoise")
-
-url = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
-
-with urllib.request.urlopen(url) as connection:
-    raw_data = connection.read()
-im = Image.open(io.BytesIO(raw_data))
-image = ImageTk.PhotoImage(im)
-
-my_label = Label(image=image)
-my_label.pack()
 
 
 
 
-Button_quit = Button(root,text="Exit",command=root.quit)
-Button_quit.pack()
+# Syeda Create an instance of tkinter window
+win = Tk()
+win.title("pokemon Game")
+win.configure(background="turquoise")
 
-root.mainloop()
+# Define the geometry of the window
+win.geometry("700x500")
+
+frame = Frame(win, width=600, height=400)
+frame.pack()
+frame.place(anchor='center', relx=0.5, rely=0.5)
+
+# Create an object of tkinter ImageTk
+img = ImageTk.PhotoImage(Image.open("C:\\Users\\syeda shah\\Python-Pokemon-Pro-main-update\\pokemoncards\\start.png"))
+
+# Create a Label Widget to display the text or Image
+label = Label(frame, image = img)
+label.pack()
+
+player_name = Label(win, text='what is your name? ')
+player_name.pack()
+
+
+def printInput():
+    inp = inputtxt.get(1.0, "end-1c")
+    lbl.config(text="Player name: " + inp)
+
+
+# TextBox Creation
+inputtxt = Text(win,
+                height=2,
+                width=10)
+
+inputtxt.pack()
+
+# Button Creation
+printButton = Button(win,
+                     text="Enter",
+                     command=printInput)
+printButton.pack()
+
+# Label Creation
+lbl = Label(win, text="", background="turquoise")
+lbl.pack()
+
+
+def play_button():
+    frame2 = Frame(win, width=800, height=700,background="turquoise")
+    frame2.pack()
+    frame2.place(anchor='center', relx=0.5, rely=0.5)
+
+
+    contains_duplicates = True
+    while contains_duplicates is not False:
+        pokemon_list = random.sample(range(1, 151), 10)
+        lbl2 = Label(win, text=pokemon_list, background="turquoise")
+        lbl2.pack()
+
+        id_set = set(pokemon_list)
+        contains_duplicates = len(pokemon_list) != len(id_set)
+
+        # KATARINA - pull pokemons to 2 arrays of 5
+        player1 = pd.DataFrame(columns=('id', 'name', 'height', 'weight', 'hp', 'attack', 'defence', 'sprite'))
+        player2 = pd.DataFrame(columns=('id', 'name', 'height', 'weight', 'hp', 'attack', 'defence', 'sprite'))
+        for i in range(0, 5):
+            url = 'https://pokeapi.co/api/v2/pokemon/{}/'.format(pokemon_list[i])
+            response = requests.get(url)
+            pokemon = response.json()
+            pokemon_new = pd.DataFrame([[pokemon['id'], pokemon['name'], pokemon['height'], pokemon['weight'],
+                                         pokemon['stats'][0]['base_stat'], pokemon['stats'][1]['base_stat'],
+                                         pokemon['stats'][2]['base_stat'],
+                                         pokemon['sprites']['front_default']]],
+                                       columns=('id', 'name', 'height', 'weight', 'hp', 'attack', 'defence', 'sprite'))
+            player1 = pd.concat([player1, pokemon_new], ignore_index=True)
+        for i in range(5, 10):
+            url = 'https://pokeapi.co/api/v2/pokemon/{}/'.format(pokemon_list[i])
+            response = requests.get(url)
+            pokemon = response.json()
+            pokemon_new = pd.DataFrame([[pokemon['id'], pokemon['name'], pokemon['height'], pokemon['weight'],
+                                         pokemon['stats'][0]['base_stat'], pokemon['stats'][1]['base_stat'],
+                                         pokemon['stats'][2]['base_stat'],
+                                         pokemon['sprites']['front_default']]],
+                                       columns=('id', 'name', 'height', 'weight', 'hp', 'attack', 'defence', 'sprite'))
+            player2 = pd.concat([player2, pokemon_new], ignore_index=True)
+        lbl3 = Label(win, text="Your team", background="turquoise")
+        lbl3.pack()
+        lbl4 = Label(win, text=player1.iloc[0:5,0:7], background="turquoise")
+        lbl4.pack()
+        lbl5 = Label(win, text="Opponents team", background="turquoise")
+        lbl5.pack()
+        lbl6 = Label(win, text=player2.iloc[0:5, 0:7], background="turquoise")
+        lbl6.pack()
+       # print('\n\nYour team\n', player1.iloc[0:5, 0:7])
+       # print('\n\nOpponents team\n', player2.iloc[0:5, 0:7])
+        cols = ['hp', 'attack', 'defence']
+        df1 = player1[cols].sum(axis=0)
+        df2 = player2[cols].sum(axis=0)
+        chance_to_win = round(df1.sum(axis=0) / df2.sum(axis=0), 3) * 100
+        lbl5 = Label(win, text="chance to win is", background="turquoise")
+        lbl5.pack()
+        lbl6 = Label(win, text=chance_to_win, background="turquoise")
+        lbl6.pack()
+        #print('chance to win is ', chance_to_win, '%')
+
+
+        def battle_button():
+
+         while player1['hp'].sum(axis=0) > 0 and player2['hp'].sum(axis=0):
+            # HERE GOES THE CODE FOR CHOOSING CARDS AND BATTLE ROUNDS
+
+            # KATARINA - choose pokemon for combat round and safeguard on 0 HP for computer
+            alive = False
+            while alive is not True:
+                p2 = random.randint(0, 4)
+                if player2.loc[p2, 'hp'] > 0: alive = True
+            lbl5 = Label(win, text="Opponents pokemon", background="turquoise")
+            lbl5.pack()
+            lbl6 = Label(win, text=player2.loc[p2, 'name'], background="turquoise")
+
+            lbl6.pack()
+            url = player2.loc[p2, 'sprite']
+
+
+
+
+
+            my_label = Label(win,text=url)
+            my_label.pack()
+
+            # print('\n\nOpponents pokemon\n', player2.loc[p2])
+            # url = player2.loc[p2, 'sprite']
+            # text = player2.loc[p2, 'name']
+            # text2 = player2.iloc[p2, 1:7]
+
+            battle_button = Button(frame2, padx=8, width=10, pady=8, bd=8, font=("Arial",
+                                                                            16), text="Battle", command=battle_button)
+            battle_button.pack()
+
+
+
+
+
+play_button = Button(win, padx=8, width=18, pady=8, bd=8, font=("Arial",26), text="Play Game", command=play_button)
+play_button.pack()
+
+win.mainloop()
+
+
 
 
 # KATIE - greet player, get name and if want to generate or choose pokemons
@@ -42,6 +172,8 @@ while contains_duplicates is not False:
     print(pokemon_list)
     id_set = set(pokemon_list)
     contains_duplicates = len(pokemon_list) != len(id_set)
+
+
 
 # KATIE - if choosing pokemons, by names of pokemon find IDs from all_pokemons and overwrite first 5 entries in the list
 
@@ -65,6 +197,7 @@ for i in range (5,10):
                 pokemon['sprites']['front_default']]], columns=('id', 'name', 'height','weight','hp','attack','defence','sprite'))
     player2 = pd.concat([player2,pokemon_new], ignore_index=True)
 print ('\n\nYour team\n',player1.iloc[0:5,0:7])
+print (player1.loc[player1,'name'])
 print ('\n\nOpponents team\n',player2.iloc[0:5,0:7])
 cols = ['hp', 'attack', 'defence']
 df1 = player1[cols].sum(axis=0)
@@ -121,7 +254,7 @@ while player1['hp'].sum(axis=0)>0 and player2['hp'].sum(axis=0):
     print('\n\nOpponents team\n', player2.iloc[0:5, 0:7])
 
 # announce result
-if player1['hp'].sum(axis=0)<player2['hp'].sum(axis=0): 
+if player1['hp'].sum(axis=0)<player2['hp'].sum(axis=0):
     print('\n\nUnfortunatelly your team lost')
 else:
     print('\n\nYour team won! \nCheck the highscores.csv!')
